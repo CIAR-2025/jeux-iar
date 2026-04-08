@@ -23,6 +23,9 @@ class TaquinGame : public QObject {
   Q_PROPERTY(QStringList history READ history NOTIFY historyChanged)
   Q_PROPERTY(int lastSolutionLength READ lastSolutionLength NOTIFY lastSolutionLengthChanged)
   Q_PROPERTY(int lastExpandedNodes READ lastExpandedNodes NOTIFY lastExpandedNodesChanged)
+  Q_PROPERTY(int lastGeneratedNodes READ lastGeneratedNodes NOTIFY lastGeneratedNodesChanged)
+  Q_PROPERTY(int lastReopenedNodes READ lastReopenedNodes NOTIFY lastReopenedNodesChanged)
+  Q_PROPERTY(int lastPeakOpen READ lastPeakOpen NOTIFY lastPeakOpenChanged)
   Q_PROPERTY(bool autoPlaying READ autoPlaying NOTIFY autoPlayingChanged)
 
 public:
@@ -40,6 +43,9 @@ public:
   QStringList history() const { return m_history; }
   int lastSolutionLength() const { return m_lastSolutionLength; }
   int lastExpandedNodes() const { return m_lastExpandedNodes; }
+  int lastGeneratedNodes() const { return m_lastGeneratedNodes; }
+  int lastReopenedNodes() const { return m_lastReopenedNodes; }
+  int lastPeakOpen() const { return m_lastPeakOpen; }
   bool autoPlaying() const { return m_autoPlaying; }
 
   Q_INVOKABLE void resetToGoal();
@@ -68,6 +74,9 @@ signals:
   void historyChanged();
   void lastSolutionLengthChanged();
   void lastExpandedNodesChanged();
+  void lastGeneratedNodesChanged();
+  void lastReopenedNodesChanged();
+  void lastPeakOpenChanged();
   void autoPlayingChanged();
 
 private:
@@ -79,6 +88,9 @@ private:
   void setManhattan(int v);
   void setLastSolutionLength(int v);
   void setLastExpandedNodes(int v);
+  void setLastGeneratedNodes(int v);
+  void setLastReopenedNodes(int v);
+  void setLastPeakOpen(int v);
   void commitBoard(const taquin::Board& b);
   void appendHistory(const QString& entry);
   void recomputeDerived();
@@ -100,6 +112,9 @@ private:
   QStringList m_history;
   int m_lastSolutionLength = 0;
   int m_lastExpandedNodes = 0;
+  int m_lastGeneratedNodes = 0;
+  int m_lastReopenedNodes = 0;
+  int m_lastPeakOpen = 0;
   bool m_autoPlaying = false;
   bool m_pendingAutoPlay = false;
 

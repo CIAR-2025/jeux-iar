@@ -14,6 +14,38 @@ ApplicationWindow {
     property string startInputText: (taquinGame.startTiles || []).join(" ")
     property string goalInputText: (taquinGame.goalTiles || []).join(" ")
 
+    Dialog {
+        id: conclusionDialog
+        title: "A propos"
+        modal: true
+        standardButtons: Dialog.Ok
+        width: 720
+
+        contentItem: ColumnLayout {
+            spacing: 10
+
+            Label {
+                text: "Jeu du taquin - Projet 1 (C++/Qt)."
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+            }
+            Label {
+                text: "Cette application gere le taquin 3x3 (8 pieces): deplacements valides, etats initial/final configurables et verification de solvabilite."
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+            }
+            Label {
+                text: "Resolution automatique via A* avec heuristique de Manhattan, execution pas a pas et mode auto-play."
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+            }
+            Label {
+                text: "Version interface: Qt Quick/QML"
+                color: "#435343"
+            }
+        }
+    }
+
     Connections {
         target: taquinGame
         function onStartTilesChanged() {
@@ -149,6 +181,12 @@ ApplicationWindow {
                         enabled: !taquinGame.busy
                         onClicked: taquinGame.shuffle(90)
                     }
+
+                    Button {
+                        text: "A propos"
+                        enabled: !taquinGame.busy
+                        onClicked: conclusionDialog.open()
+                    }
                 }
 
                 Rectangle { Layout.fillWidth: true; height: 1; color: "#c8d3c8" }
@@ -191,6 +229,9 @@ ApplicationWindow {
                           + "\nSoluble: " + (taquinGame.solvable ? "oui" : "non")
                           + "  |  Derniere solution: " + taquinGame.lastSolutionLength
                           + "  |  Noeuds explores: " + taquinGame.lastExpandedNodes
+                          + "\nNoeuds generes: " + taquinGame.lastGeneratedNodes
+                          + "  |  Etats reouverts: " + taquinGame.lastReopenedNodes
+                          + "  |  Pic OPEN: " + taquinGame.lastPeakOpen
                     color: "#435343"
                     font.pixelSize: 13
                 }

@@ -99,6 +99,24 @@ void TaquinGame::setLastExpandedNodes(int v) {
   emit lastExpandedNodesChanged();
 }
 
+void TaquinGame::setLastGeneratedNodes(int v) {
+  if (m_lastGeneratedNodes == v) return;
+  m_lastGeneratedNodes = v;
+  emit lastGeneratedNodesChanged();
+}
+
+void TaquinGame::setLastReopenedNodes(int v) {
+  if (m_lastReopenedNodes == v) return;
+  m_lastReopenedNodes = v;
+  emit lastReopenedNodesChanged();
+}
+
+void TaquinGame::setLastPeakOpen(int v) {
+  if (m_lastPeakOpen == v) return;
+  m_lastPeakOpen = v;
+  emit lastPeakOpenChanged();
+}
+
 void TaquinGame::commitBoard(const taquin::Board& b) {
   m_board = b;
   emit tilesChanged();
@@ -137,6 +155,9 @@ void TaquinGame::startFromInitial() {
   setMovesCount(0);
   setLastSolutionLength(0);
   setLastExpandedNodes(0);
+  setLastGeneratedNodes(0);
+  setLastReopenedNodes(0);
+  setLastPeakOpen(0);
   m_history.clear();
   emit historyChanged();
   setStatus("Pret depuis l'etat initial. Cliquez une tuile adjacente au vide.");
@@ -173,6 +194,9 @@ void TaquinGame::shuffle(int steps) {
   setMovesCount(0);
   setLastSolutionLength(0);
   setLastExpandedNodes(0);
+  setLastGeneratedNodes(0);
+  setLastReopenedNodes(0);
+  setLastPeakOpen(0);
   m_history.clear();
   emit historyChanged();
   setStatus("Mélangé. À vous de jouer (ou Résoudre).");
@@ -208,6 +232,9 @@ bool TaquinGame::moveIndex(int index) {
   m_solutionPos = 0;
   setLastSolutionLength(0);
   setLastExpandedNodes(0);
+  setLastGeneratedNodes(0);
+  setLastReopenedNodes(0);
+  setLastPeakOpen(0);
 
   appendHistory(QString("#%1 : tuile %2 — %3")
                     .arg(m_movesCount)
@@ -238,6 +265,9 @@ void TaquinGame::solve() {
   setStatus("Résolution A* (Manhattan) en cours…");
   setLastSolutionLength(0);
   setLastExpandedNodes(0);
+  setLastGeneratedNodes(0);
+  setLastReopenedNodes(0);
+  setLastPeakOpen(0);
 
   taquin::Board start = m_board;
   taquin::Board goal = m_goal;
@@ -263,9 +293,13 @@ void TaquinGame::solve() {
             m_solutionPos = 0;
             setLastSolutionLength(static_cast<int>(m_solution.size()));
             setLastExpandedNodes(result.expanded);
-            setStatus(QString("Solution trouvée: %1 coups, %2 nœuds explorés. Appuyez sur 'Pas'.")
+            setLastGeneratedNodes(result.generated);
+            setLastReopenedNodes(result.reopened);
+            setLastPeakOpen(result.peakOpen);
+            setStatus(QString("Solution trouvee: %1 coups, %2 noeuds explores, %3 noeuds generes. Appuyez sur 'Pas'.")
                           .arg(static_cast<int>(m_solution.size()))
-                          .arg(result.expanded));
+                          .arg(result.expanded)
+                          .arg(result.generated));
             if (m_pendingAutoPlay) {
               m_pendingAutoPlay = false;
               startAutoPlay();
@@ -370,6 +404,9 @@ bool TaquinGame::setGoalFromString(const QString& values) {
   m_solutionPos = 0;
   setLastSolutionLength(0);
   setLastExpandedNodes(0);
+  setLastGeneratedNodes(0);
+  setLastReopenedNodes(0);
+  setLastPeakOpen(0);
   recomputeDerived();
   setStatus("Etat final mis a jour: " + boardToString(m_goal));
   return true;

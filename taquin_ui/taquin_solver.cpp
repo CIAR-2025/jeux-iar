@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <cstdlib>
 #include <limits>
 #include <queue>
 #include <unordered_map>
@@ -41,6 +42,23 @@ static std::vector<Move> reconstruct(uint64_t goalCode,
   return rev;
 }
 
+static std::array<int, 9> buildGoalIndex(const Board& goal) {
+  std::array<int, 9> pos{};
+  for (int i = 0; i < 9; ++i) pos[goal[i]] = i;
+  return pos;
+}
+
+static int manhattanFast(const Board& b, const std::array<int, 9>& goalPos) {
+  int dist = 0;
+  for (int i = 0; i < 9; ++i) {
+    int v = b[i];
+    if (v == 0) continue;
+    int gi = goalPos[static_cast<size_t>(v)];
+    dist += std::abs(i / 3 - gi / 3) + std::abs(i % 3 - gi % 3);
+  }
+  return dist;
+}
+
 SolveResult solveAStar(const Board& start, const Board& goal, int nodeLimit) {
   SolveResult res;
   if (!isSolvable(start, goal)) return res;
@@ -54,9 +72,12 @@ SolveResult solveAStar(const Board& start, const Board& goal, int nodeLimit) {
 
   gScore.reserve(200000);
   came.reserve(200000);
+  const auto goalPos = buildGoalIndex(goal);
 
-  int h0 = manhattan(start, goal);
+  int h0 = manhattanFast(start, goalPos);
   open.push({startCode, 0, h0});
+  res.generated = 1;
+  res.peakOpen = 1;
   gScore[startCode] = 0;
   came[startCode] = CameFrom{0, Dir::Left, false};
 
@@ -89,8 +110,11 @@ SolveResult solveAStar(const Board& start, const Board& goal, int nodeLimit) {
       if (it == gScore.end() || tentative < it->second) {
         gScore[nc] = tentative;
         came[nc] = CameFrom{cur.code, m.dir, true};
-        int h = manhattan(nb, goal);
+        if (it != gScore.end()) ++res.reopened;
+        int h = manhattanFast(nb, goalPos);
         open.push({nc, tentative, tentative + h});
+        ++res.generated;
+        res.peakOpen = std::max(res.peakOpen, static_cast<int>(open.size()));
       }
     }
   }
@@ -99,4 +123,3 @@ SolveResult solveAStar(const Board& start, const Board& goal, int nodeLimit) {
 }
 
 } // namespace taquin
-
