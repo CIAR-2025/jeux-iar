@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+.qtcreator/
+
+# CMake / Qt build outputs
+**/build/
+**/build-*/
+**/build-cursor/
+**/CMakeCache.txt
+**/CMakeFiles/
+**/cmake_install.cmake
+**/Makefile
+**/.qt/
+**/.rcc/
+**/qmltypes/
+**/meta_types/
+**/Testing/
+
+# Qt app bundles / binaries
+**/*.app/
+**/*.dSYM/
+**/virus_console
+**/apptaquin_ui
+**/appjeux_virus
+
+# Generated Qt module files
+**/app*_qmltyperegistrations.cpp
+**/*.qmltypes
+**/qmldir
