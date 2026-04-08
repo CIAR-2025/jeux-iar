@@ -14,6 +14,8 @@ struct AiStats {
   int nodes = 0;
   int cutoffs = 0;
   int evals = 0;
+  int ttHits = 0;    // transposition-table hits
+  int ttStores = 0;  // exact entries stored
 };
 
 struct AiResult {
@@ -29,4 +31,3 @@ AiResult chooseMoveAlphaBeta(const GameState& s, Cell who, Difficulty d);
 int evaluate(const GameState& s, Cell who);
 
 } // namespace virus
-

@@ -41,6 +41,52 @@ ApplicationWindow {
         }
     }
 
+    Dialog {
+        id: conclusionDialog
+        title: "A propos"
+        modal: true
+        standardButtons: Dialog.Ok
+        width: 720
+
+        contentItem: ColumnLayout {
+            spacing: 10
+
+            Label {
+                text: "Projet 2 - Jeu du virus"
+                font.bold: true
+                font.pixelSize: 20
+                color: "#2d3f2d"
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+            }
+            Label {
+                text: "Le jeu du virus se joue sur une grille 7x7. Chaque joueur place un pion sur une case vide adjacente a l'un de ses pions."
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+            }
+            Label {
+                text: "Apres chaque placement, tous les pions adverses voisins sont convertis. La partie se termine quand plus aucun coup n'est possible."
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+            }
+            Label {
+                text: "Cette version integre une IA Minimax avec optimisation Alpha-Beta, 3 niveaux de difficulte (Debutant, Moyen, Expert), et les modes Humain vs IA, IA vs IA, Humain vs Humain."
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+            }
+            Label {
+                text: "Fonctionnalites: surbrillance des conversions, son optionnel, historique des coups et statistiques IA."
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+                color: "#435343"
+            }
+            Label {
+                text: "Version interface: Qt Quick / QML"
+                color: "#435343"
+            }
+        }
+    }
+
     Rectangle {
         anchors.fill: parent
         gradient: Gradient {
@@ -178,6 +224,12 @@ ApplicationWindow {
                     checked: soundEnabled
                     text: checked ? "Son ON" : "Muet"
                     onToggled: soundEnabled = checked
+                }
+
+                Button {
+                    Layout.fillWidth: true
+                    text: "A propos"
+                    onClicked: conclusionDialog.open()
                 }
 
                 Rectangle { Layout.fillWidth: true; height: 1; color: "#c8d3c8" }

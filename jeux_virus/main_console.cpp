@@ -132,7 +132,8 @@ int main() {
       chosen = aiRes.move;
       std::cout << "IA joue: " << chosen->r << " " << chosen->c << " | score=" << aiRes.score
                 << " | nodes=" << aiRes.stats.nodes << " | cutoffs=" << aiRes.stats.cutoffs
-                << " | evals=" << aiRes.stats.evals << " | depth=" << aiRes.stats.depth << "\n";
+                << " | evals=" << aiRes.stats.evals << " | ttHits=" << aiRes.stats.ttHits
+                << " | ttStores=" << aiRes.stats.ttStores << " | depth=" << aiRes.stats.depth << "\n";
     } else {
       auto m = readMove(s, who);
       if (!m.has_value()) {
@@ -163,4 +164,3 @@ int main() {
   }
   return 0;
 }
-
